@@ -23,12 +23,12 @@ def test_demo_and_report(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> 
     out = capsys.readouterr().out
     assert "Alarm performance:" in out
     assert "Overall: POOR" in out
-    page = html.read_text()
+    page = html.read_text(encoding="utf-8")
     assert page.startswith("<!doctype html>")
     assert "Alarms per 10 minutes" in page and "<svg" in page
     assert "http" not in page.split("<body>")[0]  # no external assets
-    assert "| 🔴 | Peak alarms in 10 minutes |" in md.read_text()
-    data = json.loads(js.read_text())
+    assert "| 🔴 | Peak alarms in 10 minutes |" in md.read_text(encoding="utf-8")
+    data = json.loads(js.read_text(encoding="utf-8"))
     assert data["overall"] == "poor"
     assert data["floods"][0]["alarms"] > 10
 
